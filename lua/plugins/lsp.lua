@@ -6,12 +6,11 @@ return {
         "neovim/nvim-lspconfig",
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
-        "hrsh7th/cmp-path",
-        "hrsh7th/cmp-cmdline",
         "hrsh7th/nvim-cmp",
+        "FelipeLema/cmp-async-path",
+        "j-hui/fidget.nvim",
         "L3MON4D3/LuaSnip",
         "saadparwaiz1/cmp_luasnip",
-        "j-hui/fidget.nvim",
     },
     config = function()
         local cmp = require("cmp")
@@ -38,8 +37,10 @@ return {
             }),
             sources = cmp.config.sources({
                 { name = "nvim_lsp" },
-                { name = "luasnip" }, -- For luasnip users.
+                { name = "luasnip" },
                 { name = "buffer" },
+                { name = "async-path" },
+                { name = "nvim_lua" }
             }),
         })
 
