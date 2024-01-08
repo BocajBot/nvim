@@ -7,6 +7,7 @@ return {
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
         "hrsh7th/nvim-cmp",
+        "ray-x/cmp-treesitter",
         "FelipeLema/cmp-async-path",
         "j-hui/fidget.nvim",
         "L3MON4D3/LuaSnip",
@@ -40,7 +41,8 @@ return {
                 { name = "luasnip" },
                 { name = "buffer" },
                 { name = "async-path" },
-                { name = "nvim_lua" }
+                { name = "nvim_lua" },
+                { name = "treesitter" },
             }),
         })
 
