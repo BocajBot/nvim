@@ -17,18 +17,6 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("plugins")
 -- {
--- 	{
--- 		"numToStr/Comment.nvim",
--- 		config = function()
--- 			require("Comment").setup()
--- 		end,
--- 	},
--- 	-- {
--- 	-- 	"ThePrimeagen/harpoon",
--- 	-- 	branch = "harpoon2",
--- 	-- 	dependencies = { { "nvim-lua/plenary.nvim" } },
--- 	-- },
--- 	"nvim-treesitter/nvim-treesitter",
 -- 	"nvim-treesitter/nvim-treesitter-context",
 -- 	"nvim-treesitter/playground",
 --

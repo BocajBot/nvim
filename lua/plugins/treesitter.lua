@@ -39,6 +39,9 @@ return {
                 end
             end,
         },
+        {
+            "nvim-treesitter/nvim-treesitter-context"
+        }
     },
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
     keys = {
