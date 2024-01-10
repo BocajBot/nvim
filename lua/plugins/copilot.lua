@@ -1,12 +1,7 @@
 return {
     "github/copilot.vim",
     config = function()
-        local function SuggestOneWord()
-            local bar = vim.fn["copilot#TextQueuedForInsertion"]()
-            return vim.fn.split(bar, [[[ .]\zs]])[1]
-        end
-
-        local map = vim.keymap.set
-        map("i", "<C-Right>", SuggestOneWord, { expr = true, remap = true })
+        vim.keymap.set('i', '<C-Right>', '<Plug>(copilot-accept-word)')
+        vim.keymap.set('i', '<C-S-Right>', '<Plug>(copilot-accept-line)')
     end,
 }
