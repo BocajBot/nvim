@@ -1,3 +1,5 @@
+-- RA-Multiplex needed for Rust Analyzer to work properly
+-- https://github.com/pr2502/ra-multiplex/
 require("bocaj")
 vim.g.mapleader = " "
 vim.g.loaded_perl_provider = 0
