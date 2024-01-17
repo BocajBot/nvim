@@ -16,5 +16,14 @@ if not vim.loop.fs_stat(lazypath) then
     })
 end
 
+local opts = { noremap = true, silent = true }
+local function quickfix()
+    vim.lsp.buf.code_action({
+        filter = function(a) return a.isPreferred end,
+        apply = true
+    })
+end
+vim.keymap.set('n', '<leader>qf', quickfix, opts)
+
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup("plugins")
