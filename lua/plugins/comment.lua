@@ -4,11 +4,11 @@ return {
         local comment = require('Comment')
         comment.setup({
             toggler = {
-                line = "",
+                line = "<C-/>",
                 block = "gbc",
             },
             opleader = {
-                line = "",
+                line = "<C-/>",
                 block = "<M-C-_>",
             },
             mappings = {
