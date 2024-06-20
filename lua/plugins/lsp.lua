@@ -95,6 +95,9 @@ return {
                     "lua_ls",
                     "rust_analyzer",
                     "tsserver",
+                    "pylsp",
+                    "bashls",
+
                 },
                 handlers = {
                     lsp_zero.default_setup,
