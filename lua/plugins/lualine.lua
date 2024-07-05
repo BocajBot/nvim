@@ -70,7 +70,7 @@ return {
         -- Insert Components
         ins('lualine_c', { function() return '▊' end, color = { fg = colors.blue }, padding = { left = 0, right = 1 } })
         ins('lualine_c', {
-            function() return '' end,
+            function() return '' end,
             color = function()
                 -- auto change color according to neovims mode
                 local mode_color = {
@@ -122,7 +122,7 @@ return {
                 end
                 return msg
             end,
-            icon = ' LSP:',
+            icon = ' LSP:',
             color = { fg = '#ffffff', gui = 'bold' }
         }) -- LSP server name
 
