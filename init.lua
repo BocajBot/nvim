@@ -516,6 +516,7 @@ require('lazy').setup({
           vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
           vim.keymap.set('n', '<leader>Y', [["+Y]])
 
+          vim.keymap.set({ 'n', 'v' }, 'd', '"_d')
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
           --    See `:help CursorHold` for information about when this is executed
