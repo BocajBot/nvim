@@ -29,12 +29,12 @@
   "nvim-lspconfig": { "branch": "master", "commit": "cf97d2485fc3f6d4df1b79a3ea183e24c272215e" },
   "nvim-nio": { "branch": "master", "commit": "7969e0a8ffabdf210edd7978ec954a47a737bbcc" },
   "nvim-treesitter": { "branch": "master", "commit": "e9ec8b4658880ab41986dba3cf8eaf1f805659bb" },
+  "nvim-web-devicons": { "branch": "master", "commit": "c0cfc1738361b5da1cd0a962dd6f774cc444f856" },
   "plenary.nvim": { "branch": "master", "commit": "a3e3bc82a3f95c5ed0d7201546d5d2c19b20d683" },
   "telescope-fzf-native.nvim": { "branch": "main", "commit": "cf48d4dfce44e0b9a2e19a008d6ec6ea6f01a83b" },
   "telescope-ui-select.nvim": { "branch": "master", "commit": "6e51d7da30bd139a6950adf2a47fda6df9fa06d2" },
   "telescope.nvim": { "branch": "0.1.x", "commit": "a0bbec21143c7bc5f8bb02e0005fa0b982edc026" },
   "todo-comments.nvim": { "branch": "main", "commit": "313b04e5b02d29ab9275c9295ff5e2b73921b0eb" },
-  "tokyonight.nvim": { "branch": "main", "commit": "66a272ba6cf93bf303c4b7a91b100ca0dd3ec7bd" },
   "vim-sleuth": { "branch": "master", "commit": "1cc4557420f215d02c4d2645a748a816c220e99b" },
   "which-key.nvim": { "branch": "main", "commit": "af4ded85542d40e190014c732fa051bdbf88be3d" }
 }
