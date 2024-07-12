@@ -144,7 +144,7 @@ return {
     ins('lualine_x', { 'branch', icon = '', color = { fg = colors.violet, gui = 'bold' }, cond = check_git_workspace })
     ins('lualine_x', {
       'diff',
-      symbols = { added = ' ', modified = '', removed = ' ' },
+      symbols = { added = ' ', modified = ' ', removed = ' ' },
       diff_color = { added = { fg = colors.green }, modified = { fg = colors.orange }, removed = { fg = colors.red } },
       cond = hide_in_width,
     })
