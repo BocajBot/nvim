@@ -203,7 +203,6 @@ return {
         'pylsp',
         'bashls',
         'html',
-        'intelephense',
         'clangd',
         'jsonls',
         'yamlls',
