@@ -17,6 +17,9 @@ vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]])
 -- Ctrl + c to exit Insert mode
 vim.keymap.set('i', '<C-c>', '<Esc>')
 
+-- Remove Q from normal mode
+vim.keymap.set('n', 'Q', '<nop>')
+
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
