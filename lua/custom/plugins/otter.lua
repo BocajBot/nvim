@@ -1,9 +1,9 @@
 return {
-  {
-    'quarto-dev/quarto-nvim',
-    dependencies = {
-      'jmbuhr/otter.nvim',
-      'nvim-treesitter/nvim-treesitter',
-    },
+  'jmbuhr/otter.nvim',
+  version = '1.15.1',
+  pin = true,
+  dependencies = {
+    'nvim-treesitter/nvim-treesitter',
   },
+  opts = {},
 }
