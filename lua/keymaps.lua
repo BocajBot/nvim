@@ -27,6 +27,12 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Twilight Toggle
 vim.keymap.set('n', '<leader>tw', '<cmd>Twilight<CR>')
 
+-- [F]ind and [R]eplace
+vim.api.nvim_set_keymap('n', '<leader>fr', ':%s@<C-r><C-w>@<C-r><C-w>@gc<Left><Left><Left>', { noremap = true, silent = false })
+--
+-- Add visual mode of above
+--
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
