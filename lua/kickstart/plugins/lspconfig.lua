@@ -199,7 +199,7 @@ return {
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'rust_analyzer',
-        'tsserver',
+        -- 'tsserver',
         'pylsp',
         'bashls',
         'html',
