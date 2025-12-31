@@ -1,3 +1,4 @@
+-- Primary indent guides configuration (deduplicated from prior duplicate spec)
 return {
   'lukas-reineke/indent-blankline.nvim',
   main = 'ibl',

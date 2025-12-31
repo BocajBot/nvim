@@ -206,7 +206,7 @@ return {
         'clangd',
         'jsonls',
         'yamlls',
-        'quick_lint_js',
+        'quick-lint-js',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

@@ -6,6 +6,7 @@ return {
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
       'saadparwaiz1/cmp_luasnip',
+      'jmbuhr/otter.nvim',
       {
         'L3MON4D3/LuaSnip',
         build = (vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0) and nil or 'make install_jsregexp',
