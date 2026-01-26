@@ -163,7 +163,14 @@ return {
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
+        -- Avoid auto-starting rust_analyzer when rustaceanvim manages it.
+        automatic_enable = {
+          exclude = { 'rust_analyzer' },
+        },
         handlers = {
+          ['rust_analyzer'] = function()
+            -- Managed by rustaceanvim to avoid duplicate clients.
+          end,
           function(server_name)
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
