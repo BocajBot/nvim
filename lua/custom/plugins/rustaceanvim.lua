@@ -9,19 +9,29 @@ return {
       capabilities = vim.tbl_deep_extend('force', capabilities, cmp_nvim_lsp.default_capabilities())
     end
 
-    local rustfmt = vim.fn.exepath('rustfmt')
     local server = {
       capabilities = capabilities,
-      settings = function(_, default_settings)
+      settings = function(_root_dir, default_settings)
+        local settings = vim.deepcopy(default_settings or {})
+        local rustfmt = vim.fn.exepath('rustfmt')
         if rustfmt ~= '' then
-          default_settings['rust-analyzer'] = default_settings['rust-analyzer'] or {}
-          default_settings['rust-analyzer'].rustfmt = default_settings['rust-analyzer'].rustfmt or {}
-          default_settings['rust-analyzer'].rustfmt.overrideCommand = { rustfmt }
+          settings['rust-analyzer'] = settings['rust-analyzer'] or {}
+          settings['rust-analyzer'].rustfmt = settings['rust-analyzer'].rustfmt or {}
+          settings['rust-analyzer'].rustfmt.overrideCommand = { rustfmt }
         end
-        return default_settings
+
+        return settings
       end,
     }
-    if vim.fn.executable('lspmux') == 1 then
+    local function lspmux_running()
+      if vim.fn.executable('lspmux') ~= 1 then
+        return false
+      end
+      vim.fn.system({ 'lspmux', 'status' })
+      return vim.v.shell_error == 0
+    end
+
+    if lspmux_running() then
       server.cmd = { 'lspmux', 'client', '--server-path', 'rust-analyzer' }
     end
 
