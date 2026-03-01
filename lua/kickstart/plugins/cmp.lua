@@ -39,6 +39,10 @@ return {
 
       cmp.setup {
         completion = { completeopt = 'menu,menuone,noinsert' },
+        performance = {
+          -- Avoid long waits when one source (e.g. language server) is slow.
+          fetching_timeout = 500,
+        },
         snippet = {
           expand = function(args)
             luasnip.lsp_expand(args.body)
@@ -61,6 +65,15 @@ return {
           { name = 'otter' },
         },
       }
+
+      cmp.setup.filetype('rust', {
+        sources = cmp.config.sources {
+          { name = 'nvim_lsp', keyword_length = 0 },
+          { name = 'luasnip' },
+          { name = 'path' },
+          { name = 'otter' },
+        },
+      })
     end,
   },
 }

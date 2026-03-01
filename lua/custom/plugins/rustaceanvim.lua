@@ -11,6 +11,10 @@ return {
 
     local server = {
       capabilities = capabilities,
+      flags = {
+        -- Batch text change notifications to avoid tight didChange loops.
+        debounce_text_changes = 300,
+      },
       settings = function(_root_dir, default_settings)
         local settings = vim.deepcopy(default_settings or {})
         local rustfmt = vim.fn.exepath('rustfmt')
@@ -31,7 +35,8 @@ return {
       return vim.v.shell_error == 0
     end
 
-    if lspmux_running() then
+    -- Opt-in only: lspmux can add extra latency for didChange-heavy buffers.
+    if vim.g.rust_use_lspmux == true and lspmux_running() then
       server.cmd = { 'lspmux', 'client', '--server-path', 'rust-analyzer' }
     end
 
