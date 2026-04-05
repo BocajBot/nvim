@@ -1,7 +1,7 @@
 return {
   'mbbill/undotree',
-
-  config = function()
-    require('keymaps').undotree()
-  end,
+  cmd = 'UndotreeToggle',
+  keys = {
+    { '<leader>u', '<cmd>UndotreeToggle<CR>', desc = 'Undo Tree' },
+  },
 }

@@ -1,8 +1,10 @@
 return {
   'nvim-lualine/lualine.nvim',
+  event = 'VeryLazy',
   dependencies = { 'nvim-tree/nvim-web-devicons' },
   config = function()
     local lualine = require 'lualine'
+    local use_icons = vim.g.have_nerd_font
 
     -- Colors
     local colors = {
@@ -29,9 +31,8 @@ return {
     end
 
     local function check_git_workspace()
-      local filepath = vim.fn.expand '%:p:h'
-      local gitdir = vim.fn.finddir('.git', filepath .. ';')
-      return gitdir and #gitdir > 0 and #gitdir < #filepath
+      local filepath = vim.api.nvim_buf_get_name(0)
+      return filepath ~= '' and vim.fs.root(filepath, '.git') ~= nil
     end
 
     -- Config
@@ -70,14 +71,14 @@ return {
     -- Insert Components
     ins('lualine_c', {
       function()
-        return '▊'
+        return use_icons and '▊' or '|'
       end,
       color = { fg = colors.blue },
       padding = { left = 0, right = 1 },
     })
     ins('lualine_c', {
       function()
-        return ''
+        return use_icons and '' or 'NVIM'
       end,
       color = function()
         -- auto change color according to neovims mode
@@ -119,10 +120,9 @@ return {
     ins('lualine_c', {
       function()
         local msg = 'No Active Lsp'
-        -- Fix deprecated functions
-        local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
-        local clients = vim.lsp.get_clients()
-        --
+        local buf_ft = vim.bo.filetype
+        local clients = vim.lsp.get_clients { bufnr = 0 }
+
         if next(clients) == nil then
           return msg
         end
@@ -134,23 +134,23 @@ return {
         end
         return msg
       end,
-      icon = ' LSP:',
+      icon = use_icons and ' LSP:' or 'LSP:',
       color = { fg = '#ffffff', gui = 'bold' },
     }) -- LSP server name
 
     -- Add components right section
     ins('lualine_x', { 'o:encoding', fmt = string.upper, cond = hide_in_width, color = { fg = colors.green, gui = 'bold' } })
     ins('lualine_x', { 'fileformat', fmt = string.upper, icons_enabled = false, color = { fg = colors.green, gui = 'bold' } })
-    ins('lualine_x', { 'branch', icon = '', color = { fg = colors.violet, gui = 'bold' }, cond = check_git_workspace })
+    ins('lualine_x', { 'branch', icon = use_icons and '' or 'git', color = { fg = colors.violet, gui = 'bold' }, cond = check_git_workspace })
     ins('lualine_x', {
       'diff',
-      symbols = { added = ' ', modified = ' ', removed = ' ' },
+      symbols = use_icons and { added = ' ', modified = ' ', removed = ' ' } or { added = '+', modified = '~', removed = '-' },
       diff_color = { added = { fg = colors.green }, modified = { fg = colors.orange }, removed = { fg = colors.red } },
       cond = hide_in_width,
     })
     ins('lualine_x', {
       function()
-        return '▊'
+        return use_icons and '▊' or '|'
       end,
       color = { fg = colors.blue },
       padding = { left = 1 },

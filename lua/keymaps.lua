@@ -1,5 +1,44 @@
 local M = {}
 
+local function jump_diagnostic(count)
+  return function()
+    vim.diagnostic.jump {
+      count = count,
+      on_jump = function(_, bufnr)
+        vim.diagnostic.open_float {
+          bufnr = bufnr,
+          scope = 'cursor',
+          focus = false,
+        }
+      end,
+    }
+  end
+end
+
+local function telescope_builtin(name)
+  return function()
+    require('telescope.builtin')[name]()
+  end
+end
+
+local function telescope_dropdown()
+  require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+    winblend = 10,
+    previewer = false,
+  })
+end
+
+local function telescope_live_grep_open_files()
+  require('telescope.builtin').live_grep {
+    grep_open_files = true,
+    prompt_title = 'Live Grep in Open Files',
+  }
+end
+
+local function telescope_find_config()
+  require('telescope.builtin').find_files { cwd = vim.fn.stdpath 'config' }
+end
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 function M.setup()
@@ -33,8 +72,8 @@ function M.setup()
   vim.api.nvim_set_keymap('n', '<leader>fr', ':%s@<C-r><C-w>@<C-r><C-w>@gc<Left><Left><Left>', { noremap = true, silent = false })
 
   -- Diagnostic keymaps
-  vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
-  vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
+  vim.keymap.set('n', '[d', jump_diagnostic(-1), { desc = 'Go to previous [D]iagnostic message' })
+  vim.keymap.set('n', ']d', jump_diagnostic(1), { desc = 'Go to next [D]iagnostic message' })
   vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
   vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
@@ -61,6 +100,8 @@ function M.setup()
   vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
   vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+  M.telescope()
+
   -- [[ Basic Autocommands ]]
   --  See `:help lua-guide-autocommands`
 
@@ -76,35 +117,20 @@ function M.setup()
   })
 end
 
-function M.telescope(builtin)
-  vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
-  vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-  vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
-  vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
-  vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-  vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
-  vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
-  vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
-  vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-  vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-
-  vim.keymap.set('n', '<leader>/', function()
-    builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-      winblend = 10,
-      previewer = false,
-    })
-  end, { desc = '[/] Fuzzily search in current buffer' })
-
-  vim.keymap.set('n', '<leader>s/', function()
-    builtin.live_grep {
-      grep_open_files = true,
-      prompt_title = 'Live Grep in Open Files',
-    }
-  end, { desc = '[S]earch [/] in Open Files' })
-
-  vim.keymap.set('n', '<leader>sn', function()
-    builtin.find_files { cwd = vim.fn.stdpath 'config' }
-  end, { desc = '[S]earch [N]eovim files' })
+function M.telescope()
+  vim.keymap.set('n', '<leader>sh', telescope_builtin 'help_tags', { desc = '[S]earch [H]elp' })
+  vim.keymap.set('n', '<leader>sk', telescope_builtin 'keymaps', { desc = '[S]earch [K]eymaps' })
+  vim.keymap.set('n', '<leader>sf', telescope_builtin 'find_files', { desc = '[S]earch [F]iles' })
+  vim.keymap.set('n', '<leader>ss', telescope_builtin 'builtin', { desc = '[S]earch [S]elect Telescope' })
+  vim.keymap.set('n', '<leader>sw', telescope_builtin 'grep_string', { desc = '[S]earch current [W]ord' })
+  vim.keymap.set('n', '<leader>sg', telescope_builtin 'live_grep', { desc = '[S]earch by [G]rep' })
+  vim.keymap.set('n', '<leader>sd', telescope_builtin 'diagnostics', { desc = '[S]earch [D]iagnostics' })
+  vim.keymap.set('n', '<leader>sr', telescope_builtin 'resume', { desc = '[S]earch [R]esume' })
+  vim.keymap.set('n', '<leader>s.', telescope_builtin 'oldfiles', { desc = '[S]earch Recent Files ("." for repeat)' })
+  vim.keymap.set('n', '<leader><leader>', telescope_builtin 'buffers', { desc = '[ ] Find existing buffers' })
+  vim.keymap.set('n', '<leader>/', telescope_dropdown, { desc = '[/] Fuzzily search in current buffer' })
+  vim.keymap.set('n', '<leader>s/', telescope_live_grep_open_files, { desc = '[S]earch [/] in Open Files' })
+  vim.keymap.set('n', '<leader>sn', telescope_find_config, { desc = '[S]earch [N]eovim files' })
 end
 
 function M.gitsigns(map, gitsigns)
@@ -163,13 +189,12 @@ function M.dap(dap, dapui)
 end
 
 function M.lsp(map, client)
-  local telescope_builtin = require 'telescope.builtin'
-  map('gd', telescope_builtin.lsp_definitions, '[G]oto [D]efinition')
-  map('gr', telescope_builtin.lsp_references, '[G]oto [R]eferences')
-  map('gI', telescope_builtin.lsp_implementations, '[G]oto [I]mplementation')
-  map('<leader>D', telescope_builtin.lsp_type_definitions, 'Type [D]efinition')
-  map('<leader>ds', telescope_builtin.lsp_document_symbols, '[D]ocument [S]ymbols')
-  map('<leader>ws', telescope_builtin.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+  map('gd', telescope_builtin 'lsp_definitions', '[G]oto [D]efinition')
+  map('gr', telescope_builtin 'lsp_references', '[G]oto [R]eferences')
+  map('gI', telescope_builtin 'lsp_implementations', '[G]oto [I]mplementation')
+  map('<leader>D', telescope_builtin 'lsp_type_definitions', 'Type [D]efinition')
+  map('<leader>ds', telescope_builtin 'lsp_document_symbols', '[D]ocument [S]ymbols')
+  map('<leader>ws', telescope_builtin 'lsp_dynamic_workspace_symbols', '[W]orkspace [S]ymbols')
   map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
   map('K', vim.lsp.buf.hover, 'Hover Documentation')
@@ -180,32 +205,6 @@ function M.lsp(map, client)
       vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
     end, '[T]oggle Inlay [H]ints')
   end
-end
-
-function M.harpoon(harpoon)
-  vim.keymap.set('n', '<leader>a', function()
-    harpoon:list():append()
-  end)
-  vim.keymap.set('n', '<C-e>', function()
-    harpoon.ui:toggle_quick_menu(harpoon:list())
-  end)
-
-  vim.keymap.set('n', '<C-h>', function()
-    harpoon:list():select(1)
-  end)
-  vim.keymap.set('n', '<C-t>', function()
-    harpoon:list():select(2)
-  end)
-  vim.keymap.set('n', '<C-n>', function()
-    harpoon:list():select(3)
-  end)
-  vim.keymap.set('n', '<C-s>', function()
-    harpoon:list():select(4)
-  end)
-end
-
-function M.undotree()
-  vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
 end
 
 return M

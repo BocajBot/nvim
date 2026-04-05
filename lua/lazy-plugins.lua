@@ -13,18 +13,6 @@ require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
-  -- NOTE: Plugins can also be added by using a table,
-  -- with the first argument being the link and the following
-  -- keys can be used to configure plugin behavior/loading/etc.
-  --
-  -- Use `opts = {}` to force a plugin to be loaded.
-  --
-  --  This is equivalent to:
-  --    require('Comment').setup({})
-
-  -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
-
   -- modular approach: using `require 'path/name'` will
   -- include a plugin definition from file lua/path/name.lua
 
@@ -39,8 +27,6 @@ require('lazy').setup({
   require 'kickstart/plugins/conform',
 
   require 'kickstart/plugins/cmp',
-
-  require 'kickstart/plugins/tokyonight',
 
   require 'kickstart/plugins/todo-comments',
 
@@ -70,23 +56,40 @@ require('lazy').setup({
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
   { import = 'custom.plugins' },
 }, {
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        '2html_plugin',
+        'getscript',
+        'getscriptPlugin',
+        'gzip',
+        'logipat',
+        'rrhelper',
+        'tarPlugin',
+        'tutor_mode_plugin',
+        'vimball',
+        'vimballPlugin',
+        'zipPlugin',
+      },
+    },
+  },
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
-    -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
+    -- default lazy.nvim defined Nerd Font icons, otherwise define an ASCII icons table
     icons = vim.g.have_nerd_font and {} or {
-      cmd = '⌘',
-      config = '🛠',
-      event = '📅',
-      ft = '📂',
-      init = '⚙',
-      keys = '🗝',
-      plugin = '🔌',
-      runtime = '💻',
-      require = '🌙',
-      source = '📄',
-      start = '🚀',
-      task = '📌',
-      lazy = '💤 ',
+      cmd = 'CMD',
+      config = 'CFG',
+      event = 'EVT',
+      ft = 'FT',
+      init = 'INIT',
+      keys = 'KEY',
+      plugin = 'PLUG',
+      runtime = 'RTP',
+      require = 'REQ',
+      source = 'SRC',
+      start = 'START',
+      task = 'TASK',
+      lazy = 'LAZY',
     },
   },
 })

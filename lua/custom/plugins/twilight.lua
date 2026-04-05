@@ -1,6 +1,10 @@
 -- Lua
 return {
   'folke/twilight.nvim',
+  cmd = 'Twilight',
+  keys = {
+    { '<leader>tw', '<cmd>Twilight<CR>', desc = 'Twilight Toggle' },
+  },
   opts = {
     dimming = {
       alpha = 0.75, -- amount of dimming

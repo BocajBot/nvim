@@ -1,5 +1,8 @@
 return {
   'ojroques/nvim-osc52',
+  enabled = function()
+    return require('platform').is_remote
+  end,
   config = function()
     require('osc52').setup()
     local function copy(lines, _)

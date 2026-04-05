@@ -2,6 +2,7 @@
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
+local platform = require 'platform'
 
 -- Make line numbers default
 vim.opt.number = true
@@ -19,9 +20,11 @@ vim.opt.mouse = 'a'
 vim.opt.showmode = false
 
 -- Sync clipboard between OS and Neovim.
---  Remove this option if you want your OS clipboard to remain independent.
+--  Prefer the native clipboard for local sessions and let OSC52 handle remote ones.
 --  See `:help 'clipboard'`
--- vim.opt.clipboard = 'unnamedplus'
+if not platform.is_remote and platform.has_native_clipboard() then
+  vim.opt.clipboard = 'unnamedplus'
+end
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -41,7 +44,8 @@ vim.opt.updatetime = 250
 
 -- Decrease mapped sequence wait time
 -- Displays which-key popup sooner
-vim.opt.timeoutlen = 300
+vim.opt.timeoutlen = 250
+vim.opt.ttimeoutlen = 10
 
 -- Configure how new splits should be opened
 vim.opt.splitright = true

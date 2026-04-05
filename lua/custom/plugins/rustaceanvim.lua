@@ -17,7 +17,7 @@ return {
       },
       settings = function(_root_dir, default_settings)
         local settings = vim.deepcopy(default_settings or {})
-        local rustfmt = vim.fn.exepath('rustfmt')
+        local rustfmt = vim.fn.exepath 'rustfmt'
         if rustfmt ~= '' then
           settings['rust-analyzer'] = settings['rust-analyzer'] or {}
           settings['rust-analyzer'].rustfmt = settings['rust-analyzer'].rustfmt or {}
@@ -28,10 +28,10 @@ return {
       end,
     }
     local function lspmux_running()
-      if vim.fn.executable('lspmux') ~= 1 then
+      if vim.fn.executable 'lspmux' ~= 1 then
         return false
       end
-      vim.fn.system({ 'lspmux', 'status' })
+      vim.fn.system { 'lspmux', 'status' }
       return vim.v.shell_error == 0
     end
 

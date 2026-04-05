@@ -2,20 +2,32 @@ return {
   {
     'akinsho/toggleterm.nvim',
     cmd = 'ToggleTerm',
-    keys = function(_, keys)
+    keys = function()
+      local platform = require 'platform'
+
+      local function terminal_env()
+        local venv = vim.b.virtual_env
+        if not venv or venv == '' then
+          return nil
+        end
+
+        local bindir = platform.joinpath(venv, platform.is_windows and 'Scripts' or 'bin')
+        return {
+          VIRTUAL_ENV = venv,
+          PATH = bindir .. platform.path_sep() .. (vim.env.PATH or ''),
+        }
+      end
+
       local function toggleterm()
-        local venv = vim.b['virtual_env']
         local term = require('toggleterm.terminal').Terminal:new {
-          env = venv and { VIRTUAL_ENV = venv } or nil,
+          env = terminal_env(),
           count = vim.v.count > 0 and vim.v.count or 1,
         }
         term:toggle()
       end
-      local mappings = {
+      return {
         { '<leader>tt', mode = { 'n', 't' }, toggleterm, desc = 'Toggle Terminal' },
-        { '<C-_>', mode = { 'n', 't' }, toggleterm, desc = 'which_key_ignore' },
       }
-      return vim.list_extend(mappings, keys)
     end,
     opts = {
       open_mapping = false,

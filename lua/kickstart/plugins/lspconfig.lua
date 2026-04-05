@@ -1,6 +1,8 @@
 return {
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
+    event = { 'BufReadPre', 'BufNewFile' },
+    cmd = { 'LspInfo', 'LspStart', 'LspStop', 'LspRestart', 'LspInstall', 'LspUninstall', 'Mason', 'MasonInstall', 'MasonUpdate' },
     dependencies = {
       { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
       'williamboman/mason-lspconfig.nvim',
@@ -16,7 +18,7 @@ return {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
           local map = function(keys, func, desc)
-            vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+            vim.keymap.set('n', keys, func, { buf = event.buf, desc = 'LSP: ' .. desc })
           end
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
@@ -55,6 +57,9 @@ return {
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+      vim.lsp.config('*', {
+        capabilities = capabilities,
+      })
 
       local servers = {
         lua_ls = {
@@ -74,7 +79,10 @@ return {
         },
       }
 
-      require('mason').setup()
+      for server_name, server in pairs(servers) do
+        vim.lsp.config(server_name, server)
+      end
+
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
@@ -92,15 +100,6 @@ return {
       require('mason-lspconfig').setup {
         automatic_enable = {
           exclude = { 'rust_analyzer' },
-        },
-        handlers = {
-          ['rust_analyzer'] = function() end,
-
-          function(server_name)
-            local server = servers[server_name] or {}
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
         },
       }
     end,
