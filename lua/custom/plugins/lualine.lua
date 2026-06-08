@@ -1,7 +1,9 @@
 return {
   'nvim-lualine/lualine.nvim',
   event = 'VeryLazy',
-  dependencies = { 'nvim-tree/nvim-web-devicons' },
+  dependencies = {
+    { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+  },
   config = function()
     local lualine = require 'lualine'
     local use_icons = vim.g.have_nerd_font
@@ -30,14 +32,10 @@ return {
       return vim.fn.winwidth(0) > 80
     end
 
-    local function check_git_workspace()
-      local filepath = vim.api.nvim_buf_get_name(0)
-      return filepath ~= '' and vim.fs.root(filepath, '.git') ~= nil
-    end
-
     -- Config
     local config = {
       options = {
+        icons_enabled = use_icons,
         component_separators = '',
         section_separators = '',
         theme = {
@@ -141,7 +139,7 @@ return {
     -- Add components right section
     ins('lualine_x', { 'o:encoding', fmt = string.upper, cond = hide_in_width, color = { fg = colors.green, gui = 'bold' } })
     ins('lualine_x', { 'fileformat', fmt = string.upper, icons_enabled = false, color = { fg = colors.green, gui = 'bold' } })
-    ins('lualine_x', { 'branch', icon = use_icons and '' or 'git', color = { fg = colors.violet, gui = 'bold' }, cond = check_git_workspace })
+    ins('lualine_x', { 'branch', icon = use_icons and '' or 'git', color = { fg = colors.violet, gui = 'bold' } })
     ins('lualine_x', {
       'diff',
       symbols = use_icons and { added = ' ', modified = ' ', removed = ' ' } or { added = '+', modified = '~', removed = '-' },

@@ -52,8 +52,8 @@ function M.setup()
   vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
   vim.keymap.set('n', '<leader>Y', [["+Y]])
 
-  -- Deleted text goes to void
-  vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]])
+  -- Delete without replacing the current yank.
+  vim.keymap.set({ 'n', 'v' }, '<leader>x', [["_d]], { desc = 'Delete without yank' })
 
   -- Ctrl + c to exit Insert mode
   vim.keymap.set('i', '<C-c>', '<Esc>')
@@ -65,11 +65,8 @@ function M.setup()
   vim.opt.hlsearch = true
   vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
-  -- Twilight Toggle
-  vim.keymap.set('n', '<leader>tw', '<cmd>Twilight<CR>')
-
   -- [F]ind and [R]eplace
-  vim.api.nvim_set_keymap('n', '<leader>fr', ':%s@<C-r><C-w>@<C-r><C-w>@gc<Left><Left><Left>', { noremap = true, silent = false })
+  vim.keymap.set('n', '<leader>fr', ':%s@<C-r><C-w>@<C-r><C-w>@gc<Left><Left><Left>', { desc = '[F]ind and [R]eplace word under cursor', silent = false })
 
   -- Diagnostic keymaps
   vim.keymap.set('n', '[d', jump_diagnostic(-1), { desc = 'Go to previous [D]iagnostic message' })
