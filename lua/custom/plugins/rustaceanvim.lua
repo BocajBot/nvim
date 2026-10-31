@@ -1,6 +1,6 @@
 return {
   'mrcjkb/rustaceanvim',
-  version = '^4',
+  version = '^9',
   ft = { 'rust' },
   init = function()
     local capabilities = vim.lsp.protocol.make_client_capabilities()

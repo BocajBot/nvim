@@ -1,22 +1,36 @@
 return {
   {
     'nvim-treesitter/nvim-treesitter',
-    branch = 'master',
+    branch = 'main',
     build = ':TSUpdate',
-    event = { 'BufReadPost', 'BufNewFile' },
-    cmd = { 'TSUpdate', 'TSUpdateSync', 'TSInstall' },
+    lazy = false,
+
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'javascript', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
-      auto_install = true,
-      highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = { 'ruby' },
+      install_dir = vim.fn.stdpath 'data' .. '/site',
+
+      ensure_installed = {
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'javascript',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'vim',
+        'vimdoc',
       },
-      indent = { enable = true, disable = { 'ruby' } },
     },
+
     config = function(_, opts)
-      require('nvim-treesitter.install').prefer_git = true
-      require('nvim-treesitter.configs').setup(opts)
+      require('nvim-treesitter').setup(opts)
+
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          pcall(vim.treesitter.start, args.buf)
+        end,
+      })
     end,
   },
 }
