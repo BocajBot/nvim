@@ -25,8 +25,8 @@ return {
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
-          local map = function(keys, func, desc)
-            vim.keymap.set('n', keys, func, { buf = event.buf, desc = 'LSP: ' .. desc })
+          local map = function(keys, func, desc, opts)
+            vim.keymap.set('n', keys, func, vim.tbl_extend('force', { buf = event.buf, desc = 'LSP: ' .. desc }, opts or {}))
           end
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)

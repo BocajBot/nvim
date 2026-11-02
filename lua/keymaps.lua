@@ -161,7 +161,7 @@ function M.gitsigns(map, gitsigns)
   map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk' })
   map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'git [r]eset hunk' })
   map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
-  map('n', '<leader>hu', gitsigns.undo_stage_hunk, { desc = 'git [u]ndo stage hunk' })
+  map('n', '<leader>hu', gitsigns.stage_hunk, { desc = 'git [u]nstage hunk (on staged hunk)' })
   map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
   map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
   map('n', '<leader>hb', gitsigns.blame_line, { desc = 'git [b]lame line' })
@@ -171,7 +171,7 @@ function M.gitsigns(map, gitsigns)
   end, { desc = 'git [D]iff against last commit' })
   -- Toggles
   map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line' })
-  map('n', '<leader>tD', gitsigns.toggle_deleted, { desc = '[T]oggle git show [D]eleted' })
+  map('n', '<leader>tD', gitsigns.preview_hunk_inline, { desc = 'git show [D]eleted inline' })
 end
 
 function M.dap(dap, dapui)
@@ -188,7 +188,7 @@ end
 
 function M.lsp(map, client)
   map('gd', telescope_builtin 'lsp_definitions', '[G]oto [D]efinition')
-  map('gr', telescope_builtin 'lsp_references', '[G]oto [R]eferences')
+  map('gr', telescope_builtin 'lsp_references', '[G]oto [R]eferences', { nowait = true }) -- skip wait for default grn/grr/...
   map('gI', telescope_builtin 'lsp_implementations', '[G]oto [I]mplementation')
   map('<leader>D', telescope_builtin 'lsp_type_definitions', 'Type [D]efinition')
   map('<leader>ds', telescope_builtin 'lsp_document_symbols', '[D]ocument [S]ymbols')
