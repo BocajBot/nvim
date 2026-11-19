@@ -19,6 +19,13 @@ require 'options'
 
 require('keymaps').setup()
 
+-- [[ Built-in tools introduced in Neovim 0.12 ]]
+-- Load the opt-in native diff tool so :DiffTool is available immediately.
+-- Keep lazy.nvim for third-party plugins and nvim-cmp for completion.
+if vim.fn.has 'nvim-0.12' == 1 then
+  vim.cmd.packadd 'nvim.difftool'
+end
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 require 'lazy-bootstrap'
 
