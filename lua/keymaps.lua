@@ -99,6 +99,15 @@ function M.setup()
 
   M.telescope()
 
+  -- Neovim 0.12's built-in undo tree is available alongside the existing
+  -- <leader>u mapping, which continues to use mbbill/undotree.
+  if vim.fn.has 'nvim-0.12' == 1 then
+    vim.keymap.set('n', '<leader>U', function()
+      vim.cmd.packadd 'nvim.undotree'
+      vim.cmd.Undotree()
+    end, { desc = 'Open native [U]ndo tree' })
+  end
+
   -- [[ Basic Autocommands ]]
   --  See `:help lua-guide-autocommands`
 
