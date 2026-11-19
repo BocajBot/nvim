@@ -13,17 +13,16 @@ local check_version = function()
   end
 
   if vim.version.cmp(vim.version(), { 0, 12, 0 }) >= 0 then
-    vim.health.ok(string.format("Neovim version is: '%s' (0.12 tools available)", verstr))
-  elseif vim.version.cmp(vim.version(), { 0, 11, 0 }) >= 0 then
-    vim.health.warn(string.format("Neovim version is: '%s'. Upgrade to 0.12 to use native undo tree and DiffTool", verstr))
+    vim.health.ok(string.format("Neovim version is: '%s' (0.12 features available)", verstr))
   else
-    vim.health.error(string.format("Neovim '%s' is too old. This configuration requires 0.11 or newer", verstr))
+    vim.health.error(string.format("Neovim '%s' is too old. nvim-treesitter/main requires 0.12 or newer", verstr))
   end
 end
 
 local check_external_reqs = function()
-  -- Basic utils: `git`, `rg`
-  for _, exe in ipairs { 'git', 'rg' } do
+  -- Git for lazy.nvim, ripgrep for Telescope, and build tools required by
+  -- the nvim-treesitter main branch (including tree-sitter-cli >= 0.26.1).
+  for _, exe in ipairs { 'git', 'rg', 'curl', 'tar', 'tree-sitter' } do
     local is_executable = vim.fn.executable(exe) == 1
     if is_executable then
       vim.health.ok(string.format("Found executable: '%s'", exe))
@@ -32,7 +31,14 @@ local check_external_reqs = function()
     end
   end
 
-  -- Optional utils used by some plugins or install flows.
+  -- A C compiler is required to build Tree-sitter parsers.
+  if vim.fn.executable 'cc' == 1 or vim.fn.executable 'gcc' == 1 or vim.fn.executable 'clang' == 1 or vim.fn.executable 'cl' == 1 then
+    vim.health.ok 'Found a C compiler for Tree-sitter parsers'
+  else
+    vim.health.error 'No C compiler found for Tree-sitter parser builds'
+  end
+
+  -- Optional utilities used by other plugins and install flows.
   for _, exe in ipairs { 'make', 'unzip' } do
     local is_executable = vim.fn.executable(exe) == 1
     if is_executable then
