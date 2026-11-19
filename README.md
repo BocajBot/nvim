@@ -2,15 +2,16 @@
 
 A Lua-based Neovim configuration using **lazy.nvim**, **nvim-cmp/LuaSnip**, Mason, the built-in LSP configuration API, and Tree-sitter.
 
-**Minimum supported Neovim:** 0.11. **Recommended:** 0.12.x (stable).
+**Required Neovim:** 0.12.x (stable), because this configuration tracks the `nvim-treesitter` `main` branch.
 
 ## Upgrade
 
 On CachyOS/Arch Linux, upgrade the installed editor with:
 
 ```sh
-sudo pacman -Syu neovim
+sudo pacman -Syu neovim tree-sitter-cli base-devel
 nvim --version | head -1
+tree-sitter --version
 ```
 
 Then open Neovim and run:
@@ -21,7 +22,7 @@ Then open Neovim and run:
 :checkhealth kickstart
 ```
 
-`:TSUpdate` may require the `tree-sitter` CLI, depending on which parsers you build.
+`nvim-treesitter/main` requires `tree-sitter-cli` **0.26.1+**, `tar`, `curl`, and a C compiler. If your package manager ships an older Tree-sitter CLI, install a compatible version before updating parsers.
 
 ## Neovim 0.12 features
 
@@ -32,7 +33,7 @@ Then open Neovim and run:
 | Open the existing mbbill/undotree UI | `<leader>u` |
 | Check version compatibility | `:checkhealth kickstart` |
 
-The native diff tool loads at startup on Neovim 0.12+. The native undo tree loads only when its mapping is used. Neovim 0.11 keeps the original bindings and plugin behavior.
+The native diff tool loads at startup on Neovim 0.12+. The native undo tree loads only when its mapping is used. The existing third-party undo tree and its keybinding remain unchanged.
 
 This configuration deliberately **keeps lazy.nvim and nvim-cmp**. Switching to `vim.pack` or enabling the native `autocomplete` option would duplicate or interfere with existing plugin management and completion behavior. Experimental `ui2` is also not enabled automatically.
 
