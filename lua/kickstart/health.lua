@@ -12,10 +12,12 @@ local check_version = function()
     return
   end
 
-  if vim.version.cmp(vim.version(), { 0, 9, 4 }) >= 0 then
-    vim.health.ok(string.format("Neovim version is: '%s'", verstr))
+  if vim.version.cmp(vim.version(), { 0, 12, 0 }) >= 0 then
+    vim.health.ok(string.format("Neovim version is: '%s' (0.12 tools available)", verstr))
+  elseif vim.version.cmp(vim.version(), { 0, 11, 0 }) >= 0 then
+    vim.health.warn(string.format("Neovim version is: '%s'. Upgrade to 0.12 to use native undo tree and DiffTool", verstr))
   else
-    vim.health.error(string.format("Neovim out of date: '%s'. Upgrade to latest stable or nightly", verstr))
+    vim.health.error(string.format("Neovim '%s' is too old. This configuration requires 0.11 or newer", verstr))
   end
 end
 
