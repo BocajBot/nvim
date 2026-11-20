@@ -20,7 +20,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y lua5.1 ripgrep build-essential curl tar
-          npm install --global tree-sitter-cli@0.26.12
+          npm install -g --allow-scripts=tree-sitter-cli tree-sitter-cli@0.26.12
+          tree-sitter --version
       - name: Parse Lua modules
         run: |
           find . -type f -name '*.lua' -print0 | xargs -0 -n1 luac5.1 -p
@@ -39,4 +40,8 @@ jobs:
             '+lua assert(vim.fn.maparg("<leader>u", "n") ~= "")' \
             '+lua assert(vim.fn.maparg("<leader>cc", "n") ~= "")' \
             '+lua assert(vim.fn.maparg("<C-Space>", "i") ~= "")' \
+            '+lua assert(type(require("telescope").setup) == "function")' \
+            '+lua assert(type(require("gitsigns").setup) == "function")' \
+            '+lua assert(type(require("harpoon").setup) == "function")' \
+            '+lua assert(vim.fn.exists(":ToggleTerm") == 2)' \
             '+qa'
