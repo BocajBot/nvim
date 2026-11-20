@@ -20,7 +20,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y lua5.1 ripgrep build-essential curl tar
-          npm install --global tree-sitter-cli@0.26.1
+          npm install --global tree-sitter-cli@0.26.12
       - name: Parse Lua modules
         run: |
           find . -type f -name '*.lua' -print0 | xargs -0 -n1 luac5.1 -p
