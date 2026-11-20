@@ -1,27 +1,7 @@
-return {
-  { -- LSP Configuration & Plugins
-    'neovim/nvim-lspconfig',
-    event = { 'BufReadPre', 'BufNewFile' },
-    cmd = { 'LspInfo', 'LspStart', 'LspStop', 'LspRestart', 'LspInstall', 'LspUninstall', 'Mason', 'MasonInstall', 'MasonUpdate' },
-    dependencies = {
-      { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
-      'williamboman/mason-lspconfig.nvim',
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
-
-      -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
-
-      {
-        'folke/lazydev.nvim',
-        ft = 'lua',
-        opts = {
-          library = {
-            { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
-          },
-        },
-      },
-    },
-    config = function()
+-- Native Neovim LSP client with nvim-lspconfig presets and Mason provisioning.
+-- No nvim-cmp, fidget, or custom completion capabilities required.
+return function()
+  require('mason').setup()
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
@@ -32,10 +12,13 @@ return {
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           require('keymaps').lsp(map, client)
 
-          -- If built-in LSP completion was enabled elsewhere, turn it off for
-          -- rust-analyzer so completion requests stay on explicit/manual paths.
-          if client and client.name == 'rust-analyzer' and vim.lsp.completion then
-            pcall(vim.lsp.completion.enable, false, client.id, event.buf)
+          -- Native completion replaces nvim-cmp. Rust stays explicit/manual to
+          -- avoid the didChange and completion latency that this config guarded.
+          if client and client:supports_method('textDocument/completion', event.buf) then
+            local is_rust = client.name == 'rust_analyzer' or client.name == 'rust-analyzer'
+            vim.lsp.completion.enable(true, client.id, event.buf, {
+              autotrigger = not is_rust,
+            })
           end
 
           if client and client.server_capabilities.documentHighlightProvider and client.name ~= 'rust-analyzer' then
@@ -63,10 +46,8 @@ return {
         end,
       })
 
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
       vim.lsp.config('*', {
-        capabilities = capabilities,
+        capabilities = vim.lsp.protocol.make_client_capabilities(),
       })
 
       local servers = {
@@ -110,7 +91,4 @@ return {
           exclude = { 'rust_analyzer' },
         },
       }
-    end,
-  },
-}
--- vim: ts=2 sts=2 sw=2 et
+end
