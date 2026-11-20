@@ -31,7 +31,7 @@ vim.pack.add {
   gh 'lukas-reineke/indent-blankline.nvim',
   { src = gh 'ThePrimeagen/harpoon', version = 'harpoon2' },
   gh 'folke/twilight.nvim',
-  { src = gh 'mrcjkb/rustaceanvim', version = vim.version.range '9.*' },
+  { src = gh 'mrcjkb/rustaceanvim', version = vim.version.range '^9' },
   gh 'ggml-org/llama.vim',
   gh 'akinsho/toggleterm.nvim',
 }
@@ -39,7 +39,7 @@ vim.pack.add {
 -- Monokai and custom appearance remain unchanged.
 require('custom.plugins.colors').init()
 
--- These legacy spec files supply only their config/opts; lazy.nvim is not used.
+-- Existing modules supply plugin-specific options; lazy.nvim is not used.
 require('gitsigns').setup(require('kickstart.plugins.gitsigns')[1].opts)
 require('kickstart.plugins.which-key')[1].config()
 require('kickstart.plugins.telescope')[1].config()
