@@ -1,0 +1,38 @@
+name: Neovim config (0.12)
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Neovim 0.12
+        uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: v0.12.6
+      - name: Install Neovim configuration dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.1 ripgrep build-essential curl tar
+          npm install -g --allow-scripts=tree-sitter-cli tree-sitter-cli@0.26.12
+          tree-sitter --version
+      - name: Parse Lua modules
+        run: |
+          find . -type f -name '*.lua' -print0 | xargs -0 -n1 luac5.1 -p
+      - name: First-run Neovim startup and built-in mappings
+        run: |
+          conf_root="$(mktemp -d)"
+          ln -s "$GITHUB_WORKSPACE" "$conf_root/nvim"
+          export XDG_CONFIG_HOME="$conf_root"
+          export XDG_DATA_HOME="$(mktemp -d)"
+          export XDG_STATE_HOME="$(mktemp -d)"
+          export XDG_CACHE_HOME="$(mktemp -d)"
+          timeout 480 nvim --headless \
+            '+luafile tests/smoke.lua' \
+            '+qa'

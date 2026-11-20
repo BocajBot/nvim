@@ -18,9 +18,16 @@ vim.g.loaded_ruby_provider = 0
 require 'options'
 
 require('keymaps').setup()
+require('native-comments').setup()
 
--- [[ Install `lazy.nvim` plugin manager ]]
-require 'lazy-bootstrap'
+-- 0.12 is required by nvim-treesitter/main and the native plugin setup.
+if vim.fn.has 'nvim-0.12' ~= 1 then
+  error 'This configuration requires Neovim 0.12 or newer'
+end
 
--- [[ Configure and install plugins ]]
-require 'lazy-plugins'
+-- Bundled modules are opt-in.
+vim.cmd.packadd 'nvim.undotree'
+vim.cmd.packadd 'nvim.difftool'
+
+-- External plugins are installed and configured by Neovim's own vim.pack.
+require 'native-plugins'

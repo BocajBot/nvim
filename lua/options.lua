@@ -13,6 +13,9 @@ vim.opt.relativenumber = true
 -- Enable true color support for accurate highlight colors
 vim.opt.termguicolors = true
 
+-- 0.12 built-in insert completion keeps the familiar completion popup.
+vim.opt.completeopt = 'menuone,noselect,popup'
+
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
 
@@ -22,7 +25,11 @@ vim.opt.showmode = false
 -- Sync clipboard between OS and Neovim.
 --  Prefer the native clipboard for local sessions and let OSC52 handle remote ones.
 --  See `:help 'clipboard'`
-if not platform.is_remote and platform.has_native_clipboard() then
+if platform.is_remote then
+  -- Native OSC52 replaces nvim-osc52 in SSH/tmux sessions. Host terminal
+  -- support still determines whether remote paste requests are possible.
+  vim.g.clipboard = 'osc52'
+elseif platform.has_native_clipboard() then
   vim.opt.clipboard = 'unnamedplus'
 end
 

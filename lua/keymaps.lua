@@ -99,6 +99,26 @@ function M.setup()
 
   M.telescope()
 
+  -- Keep the familiar <leader>u mapping with Neovim's native undo tree.
+  vim.keymap.set('n', '<leader>u', '<cmd>Undotree<CR>', { desc = 'Native undo tree' })
+  vim.keymap.set('n', '<leader>U', '<cmd>Undotree<CR>', { desc = 'Native undo tree' })
+
+  -- The default <C-n>/<C-p> keys navigate Neovim's native completion popup.
+  vim.keymap.set('i', '<C-Space>', vim.lsp.completion.get, { desc = 'Trigger LSP completion' })
+  vim.keymap.set('i', '<CR>', function()
+    return vim.fn.pumvisible() == 1 and '<C-y>' or '<CR>'
+  end, { expr = true, desc = 'Accept completion or insert newline' })
+  vim.keymap.set({ 'i', 's' }, '<C-l>', function()
+    if vim.snippet.active { direction = 1 } then
+      vim.snippet.jump(1)
+    end
+  end, { desc = 'Next native snippet field' })
+  vim.keymap.set({ 'i', 's' }, '<C-h>', function()
+    if vim.snippet.active { direction = -1 } then
+      vim.snippet.jump(-1)
+    end
+  end, { desc = 'Previous native snippet field' })
+
   -- [[ Basic Autocommands ]]
   --  See `:help lua-guide-autocommands`
 

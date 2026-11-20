@@ -12,7 +12,7 @@ return {
       model_inst = vim.env.LLAMA_VIM_INST_MODEL or 'Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL',
       api_key = vim.env.LLAMA_VIM_API_KEY or '',
 
-      -- nvim-cmp already provides automatic completion; request FIM manually.
+      -- Native LSP completion is active; request local FIM manually.
       auto_fim = false,
 
       -- Avoid nvim-cmp's <C-h>/<C-l> snippet mappings.
