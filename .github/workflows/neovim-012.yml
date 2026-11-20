@@ -34,14 +34,5 @@ jobs:
           export XDG_STATE_HOME="$(mktemp -d)"
           export XDG_CACHE_HOME="$(mktemp -d)"
           timeout 480 nvim --headless \
-            '+lua assert(vim.fn.has("nvim-0.12") == 1)' \
-            '+lua assert(vim.fn.exists(":DiffTool") == 2)' \
-            '+lua assert(vim.fn.exists(":Undotree") == 2)' \
-            '+lua assert(vim.fn.maparg("<leader>u", "n") ~= "")' \
-            '+lua assert(vim.fn.maparg("<leader>cc", "n") ~= "")' \
-            '+lua assert(vim.fn.maparg("<C-Space>", "i") ~= "")' \
-            '+lua assert(type(require("telescope").setup) == "function")' \
-            '+lua assert(type(require("gitsigns").setup) == "function")' \
-            '+lua assert(type(require("harpoon").setup) == "function")' \
-            '+lua assert(vim.fn.exists(":ToggleTerm") == 2)' \
+            '+luafile tests/smoke.lua' \
             '+qa'
