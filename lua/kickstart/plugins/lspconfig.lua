@@ -21,7 +21,7 @@ return function()
             })
           end
 
-          if client and client.server_capabilities.documentHighlightProvider and client.name ~= 'rust-analyzer' then
+          if client and client.server_capabilities.documentHighlightProvider and client.name ~= 'rust-analyzer' and client.name ~= 'rust_analyzer' then
             local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
               buffer = event.buf,
